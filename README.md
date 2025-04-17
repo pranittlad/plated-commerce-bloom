@@ -1,73 +1,182 @@
-# Welcome to your Lovable project
 
-## Project info
+# Godhadya E-Commerce Website
 
-**URL**: https://lovable.dev/projects/59f1ad6f-f5d6-4b09-9932-07f6669404b4
+A comprehensive e-commerce platform built with React, Tailwind CSS, Supabase, Stripe, and more.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Responsive Design:** Works seamlessly on mobile, tablet, and desktop devices.
+- **Product Catalog:** Browse products by category (Men/Women).
+- **Search Functionality:** Find products by name.
+- **Shopping Cart:** Add/remove items, adjust quantities, and see the total price.
+- **User Accounts:** Register, login, and manage your profile.
+- **Checkout Process:** Secure checkout with Stripe payment processing.
+- **Order Management:** View your order history.
 
-**Use Lovable**
+## Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/59f1ad6f-f5d6-4b09-9932-07f6669404b4) and start prompting.
+- **Frontend:** React with TypeScript
+- **Styling:** Tailwind CSS, Shadcn/UI components
+- **Routing:** React Router
+- **Database:** Supabase
+- **Authentication:** Supabase Auth
+- **Forms:** React Hook Form with Zod validation
+- **Payment Processing:** Stripe
+- **State Management:** Context API, React Query
+- **Icons:** Lucide React
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js (v18+)
+- npm or yarn
+- Supabase account
+- Stripe account
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Installation
 
-Follow these steps:
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/godhadya.git
+   cd godhadya
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. Create a `.env` file in the root directory with the following variables:
+   ```
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_STRIPE_PUBLIC_KEY=your_stripe_public_key
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. Start the development server:
+   ```
+   npm run dev
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## Supabase Setup
+
+1. Create a new Supabase project.
+
+2. Run the following SQL in the Supabase SQL editor to create the necessary tables:
+
+```sql
+-- Create products table
+CREATE TABLE public.products (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  category TEXT NOT NULL,
+  description TEXT,
+  image_url TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create profiles table (extends Supabase auth.users)
+CREATE TABLE public.profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  full_name TEXT,
+  avatar_url TEXT,
+  email TEXT,
+  updated_at TIMESTAMP WITH TIME ZONE
+);
+
+-- Create cart table
+CREATE TABLE public.cart (
+  id SERIAL PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  product_id INTEGER REFERENCES public.products(id) ON DELETE CASCADE,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Sample data insertion
+INSERT INTO public.products (name, price, category, description, image_url) VALUES
+('Men''s Classic T-Shirt', 24.99, 'Men', 'A comfortable and versatile t-shirt that''s perfect for everyday wear. Made from 100% cotton with a classic fit.', 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3'),
+('Men''s Slim-Fit Jeans', 49.99, 'Men', 'Modern slim-fit jeans with a comfortable stretch. Perfect for both casual and semi-formal occasions.', 'https://images.unsplash.com/photo-1604176424472-45cd9f9dda69?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3'),
+('Women''s Summer Dress', 39.99, 'Women', 'A lightweight, flowy summer dress with a floral pattern. Perfect for warm days and casual outings.', 'https://images.unsplash.com/photo-1569315729857-219941162c57?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3'),
+('Women''s Casual Blouse', 29.99, 'Women', 'A versatile blouse that can be dressed up or down. Features a comfortable fit and elegant design.', 'https://images.unsplash.com/photo-1551489186-cf8726f514f8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3');
 ```
 
-**Edit a file directly in GitHub**
+3. Enable Email Authentication in Supabase Auth settings.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+4. Set up Row Level Security (RLS) policies for your tables.
 
-**Use GitHub Codespaces**
+## Stripe Setup
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Create a Stripe account if you don't already have one.
 
-## What technologies are used for this project?
+2. Get your API keys from the Stripe Dashboard.
 
-This project is built with:
+3. Update the `.env` file with your Stripe public key.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+4. For a production environment, you'll need to set up webhook endpoints.
 
-## How can I deploy this project?
+## Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/59f1ad6f-f5d6-4b09-9932-07f6669404b4) and click on Share -> Publish.
+### Deploying to Vercel
 
-## Can I connect a custom domain to my Lovable project?
+1. Push your code to a GitHub repository.
 
-Yes, you can!
+2. Log in to Vercel and import your GitHub repository.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+3. Set up environment variables in the Vercel dashboard.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+4. Deploy the project!
+
+### Deploying to Netlify
+
+1. Push your code to a GitHub repository.
+
+2. Log in to Netlify and import your GitHub repository.
+
+3. Set up environment variables in the Netlify dashboard.
+
+4. Deploy the project!
+
+## Project Structure
+
+```
+godhadya/
+├── public/                 # Static assets
+├── src/
+│   ├── components/         # Reusable components
+│   │   ├── ui/             # UI components from shadcn/ui
+│   │   ├── Header.tsx      # Site header with navigation
+│   │   ├── Footer.tsx      # Site footer
+│   │   └── ...
+│   ├── context/            # React context providers
+│   │   ├── CartContext.tsx # Shopping cart state
+│   │   └── AuthContext.tsx # Authentication state
+│   ├── lib/                # Utility functions
+│   │   ├── supabase.ts     # Supabase client and queries
+│   │   └── utils.ts        # Helper functions
+│   ├── pages/              # Page components
+│   │   ├── HomePage.tsx    # Home page
+│   │   ├── CategoryPage.tsx # Men's and Women's pages
+│   │   └── ...
+│   ├── App.tsx             # Main App component with routes
+│   ├── index.css           # Global CSS
+│   └── main.tsx            # Entry point
+├── tailwind.config.ts      # Tailwind CSS configuration
+├── tsconfig.json           # TypeScript configuration
+└── package.json            # Dependencies and scripts
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [Tailwind CSS](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Supabase](https://supabase.io/)
+- [Stripe](https://stripe.com/)
+- [React](https://reactjs.org/)
+- [Unsplash](https://unsplash.com/) for the sample product images
