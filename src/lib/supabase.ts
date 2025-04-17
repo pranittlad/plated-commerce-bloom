@@ -1,13 +1,5 @@
 
-import { createClient } from '@supabase/supabase-js';
-
-// Supabase configuration
-// These environment variables will need to be set in your deployment environment
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-
-// Create Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/integrations/supabase/client';
 
 // Sample data for demo purposes
 export const sampleProducts = [
