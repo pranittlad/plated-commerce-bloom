@@ -65,6 +65,13 @@ export default {
 					800: '#166534',
 					900: '#14532d',
 					950: '#052e16',
+				},
+				// Dark mode specific colors
+				dark: {
+					background: '#121212',
+					card: '#1E1E1E',
+					accent: '#BB86FC',
+					accent2: '#03DAC6',
 				}
 			},
 			borderRadius: {
