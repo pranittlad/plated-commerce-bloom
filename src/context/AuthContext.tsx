@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { useToast } from "@/components/ui/use-toast";
@@ -70,11 +69,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       });
       
-      if (!error) {
+      if (!error && data.user) {
         // Create a profile entry
         const { error: profileError } = await supabase
           .from('profiles')
-          .insert([{ id: data.user?.id, full_name: fullName, email }]);
+          .insert([{ 
+            id: data.user.id, 
+            full_name: fullName, 
+            email 
+          }]);
         
         if (profileError) {
           console.error('Error creating profile:', profileError);
@@ -120,9 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const { error } = await supabase
         .from('profiles')
-        .upsert(updates)
-        .eq('id', user.id)
-        .select();
+        .upsert(updates);
 
       if (!error) {
         toast({
