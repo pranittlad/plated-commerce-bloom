@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { useToast } from "@/components/ui/use-toast";
@@ -24,14 +23,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { toast } = useToast();
 
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -72,7 +69,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       if (!error && data.user) {
-        // Use raw SQL query to insert profile data
         const { error: profileError } = await supabase.rpc('create_profile', {
           user_id: data.user.id,
           full_name: fullName,
@@ -114,15 +110,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('No user logged in');
       }
 
-      // Use raw SQL query to update profile data
-      const updates = {
+      const { error } = await supabase.rpc('update_profile', {
         user_id: user.id,
         full_name: data.fullName,
-        avatar_url: data.avatar_url,
-        updated_timestamp: new Date().toISOString()
-      };
-
-      const { error } = await supabase.rpc('update_profile', updates);
+        avatar_url: data.avatar_url
+      });
 
       if (!error) {
         toast({

@@ -56,7 +56,7 @@ export const fetchProductById = async (productId: string) => {
       return null;
     }
     
-    return data as Product;
+    return data as Product | null;
   } catch (error) {
     console.error(`Failed to fetch product ${productId}:`, error);
     return null;
