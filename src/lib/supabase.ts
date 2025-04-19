@@ -96,7 +96,20 @@ export const fetchUserProfile = async (userId: string) => {
       return null;
     }
     
-    return data as Profile;
+    // Properly cast the returned data to match Profile type
+    // This ensures TypeScript knows we're handling the type conversion safely
+    if (data) {
+      const profile: Profile = {
+        id: data.id as string,
+        full_name: data.full_name as string | null,
+        avatar_url: data.avatar_url as string | null,
+        email: data.email as string | null,
+        updated_at: data.updated_at as string
+      };
+      return profile;
+    }
+    
+    return null;
   } catch (error) {
     console.error('Failed to fetch user profile:', error);
     return null;
