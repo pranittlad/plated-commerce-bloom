@@ -96,9 +96,22 @@ export const fetchUserProfile = async (userId: string) => {
       return null;
     }
     
-    return data as Profile;
+    // Cast data as a record first to ensure safe type access
+    const profileData = data as Record<string, unknown>;
+    
+    // Create a properly typed Profile object
+    const profile: Profile = {
+      id: profileData.id as string,
+      full_name: profileData.full_name as string | null,
+      avatar_url: profileData.avatar_url as string | null,
+      email: profileData.email as string | null,
+      updated_at: profileData.updated_at as string
+    };
+    
+    return profile;
   } catch (error) {
     console.error('Failed to fetch user profile:', error);
     return null;
   }
 };
+

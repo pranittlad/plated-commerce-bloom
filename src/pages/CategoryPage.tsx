@@ -1,6 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductGrid from '@/components/ProductGrid';
@@ -9,27 +10,12 @@ import { Product } from '@/types/product';
 
 const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        setLoading(true);
-        if (category === 'men' || category === 'women') {
-          const categoryName = category === 'men' ? 'Men' : 'Women';
-          const data = await fetchProductsByCategory(categoryName);
-          setProducts(data);
-        }
-      } catch (error) {
-        console.error(`Error fetching ${category} products:`, error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getProducts();
-  }, [category]);
+  
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['products', category],
+    queryFn: () => fetchProductsByCategory(category === 'men' ? 'Men' : 'Women'),
+    enabled: category === 'men' || category === 'women'
+  });
 
   const categoryTitle = category === 'men' ? "Men's Collection" : "Women's Collection";
   const categoryDescription = category === 'men' 
@@ -40,17 +26,22 @@ const CategoryPage: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow">
-        <div className="bg-gray-100 py-12">
-          <div className="godhadya-container">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{categoryTitle}</h1>
-            <p className="text-gray-600 max-w-2xl">{categoryDescription}</p>
+        <div className="bg-gray-100 dark:bg-gray-800 py-12">
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
+              {categoryTitle}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl">
+              {categoryDescription}
+            </p>
           </div>
         </div>
         
-        <div className="godhadya-container py-12">
+        <div className="container mx-auto px-4 py-12">
           <ProductGrid 
             products={products}
-            loading={loading}
+            loading={isLoading}
+            title={`${categoryTitle} Products`}
           />
         </div>
       </main>
