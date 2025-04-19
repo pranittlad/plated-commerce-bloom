@@ -7,7 +7,7 @@ import QuantitySelector from '@/components/QuantitySelector';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { fetchProductById } from '@/lib/supabase';
-import { Product, useCart } from '@/context/CartContext';
+import { useCart, Product } from '@/context/CartContext';
 import { ShoppingCart, ArrowLeft, Check } from 'lucide-react';
 
 const ProductPage: React.FC = () => {
@@ -23,8 +23,12 @@ const ProductPage: React.FC = () => {
       try {
         setLoading(true);
         if (productId) {
-          const data = await fetchProductById(parseInt(productId));
-          setProduct(data || null);
+          const data = await fetchProductById(productId);
+          if (data) {
+            setProduct(data);
+          } else {
+            setProduct(null);
+          }
         }
       } catch (error) {
         console.error(`Error fetching product ${productId}:`, error);

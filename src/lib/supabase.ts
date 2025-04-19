@@ -1,6 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Product } from '@/types/product';
+import type { Profile } from '@/types/profile';
 
 // Fetch products from Supabase
 export const fetchProducts = async () => {
@@ -22,7 +23,7 @@ export const fetchProducts = async () => {
 };
 
 // Fetch products by category
-export const fetchProductsByCategory = async (category: 'Men' | 'Women') => {
+export const fetchProductsByCategory = async (category: string) => {
   try {
     const { data, error } = await supabase
       .from('products')
@@ -85,18 +86,17 @@ export const searchProducts = async (query: string) => {
 // Fetch user profile
 export const fetchUserProfile = async (userId: string) => {
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
+    // Use rpc call to fetch profile
+    const { data, error } = await supabase.rpc('get_profile', {
+      user_id: userId
+    });
     
     if (error) {
       console.error('Error fetching user profile:', error);
       return null;
     }
     
-    return data;
+    return data as Profile;
   } catch (error) {
     console.error('Failed to fetch user profile:', error);
     return null;

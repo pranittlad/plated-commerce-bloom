@@ -1,7 +1,9 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from '@/integrations/supabase/client';
+import { Profile } from '@/types/profile';
 
 interface AuthContextType {
   session: Session | null;
@@ -70,14 +72,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       
       if (!error && data.user) {
-        // Create a profile entry
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([{ 
-            id: data.user.id, 
-            full_name: fullName, 
-            email 
-          }]);
+        // Use raw SQL query to insert profile data
+        const { error: profileError } = await supabase.rpc('create_profile', {
+          user_id: data.user.id,
+          full_name: fullName,
+          user_email: email
+        });
         
         if (profileError) {
           console.error('Error creating profile:', profileError);
@@ -114,16 +114,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('No user logged in');
       }
 
+      // Use raw SQL query to update profile data
       const updates = {
-        id: user.id,
-        ...(data.fullName && { full_name: data.fullName }),
-        ...(data.avatar_url && { avatar_url: data.avatar_url }),
-        updated_at: new Date().toISOString(),
+        user_id: user.id,
+        full_name: data.fullName,
+        avatar_url: data.avatar_url,
+        updated_timestamp: new Date().toISOString()
       };
 
-      const { error } = await supabase
-        .from('profiles')
-        .upsert(updates);
+      const { error } = await supabase.rpc('update_profile', updates);
 
       if (!error) {
         toast({

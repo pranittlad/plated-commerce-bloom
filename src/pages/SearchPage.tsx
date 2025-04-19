@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductGrid from '@/components/ProductGrid';
 import { searchProducts } from '@/lib/supabase';
-import { Product } from '@/context/CartContext';
+import { Product } from '@/types/product';
 
 const SearchPage: React.FC = () => {
   const location = useLocation();

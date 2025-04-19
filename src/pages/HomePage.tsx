@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import ProductGrid from '@/components/ProductGrid';
 import { fetchProducts } from '@/lib/supabase';
-import { Product } from '@/context/CartContext';
+import { Product } from '@/types/product';
 
 const HomePage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

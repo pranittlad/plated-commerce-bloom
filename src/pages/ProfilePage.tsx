@@ -1,15 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { fetchUserProfile } from '@/lib/supabase';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Profile } from '@/types/profile';
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuth();
-  const [profile, setProfile] = useState<{
-    full_name: string | null;
-    avatar_url: string | null;
-  } | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +16,13 @@ const ProfilePage: React.FC = () => {
       if (user) {
         setLoading(true);
         const userProfile = await fetchUserProfile(user.id);
-        setProfile(userProfile || { full_name: null, avatar_url: null });
+        
+        if (userProfile) {
+          setProfile(userProfile as Profile);
+        } else {
+          setProfile(null);
+        }
+        
         setLoading(false);
       }
     };

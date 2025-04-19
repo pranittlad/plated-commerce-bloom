@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductGrid from '@/components/ProductGrid';
 import { fetchProductsByCategory } from '@/lib/supabase';
-import { Product } from '@/context/CartContext';
+import { Product } from '@/types/product';
 
 const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
@@ -17,7 +17,8 @@ const CategoryPage: React.FC = () => {
       try {
         setLoading(true);
         if (category === 'men' || category === 'women') {
-          const data = await fetchProductsByCategory(category === 'men' ? 'Men' : 'Women');
+          const categoryName = category === 'men' ? 'Men' : 'Women';
+          const data = await fetchProductsByCategory(categoryName);
           setProducts(data);
         }
       } catch (error) {
