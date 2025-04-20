@@ -6,6 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { registerSchema, type RegisterFormValues } from './schemas';
+import { User, Mail, Lock } from 'lucide-react';
 
 interface RegisterFormProps {
   onSubmit: (values: RegisterFormValues) => Promise<void>;
@@ -33,11 +34,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
             <FormItem>
               <FormLabel>Full Name</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="John Doe" 
-                  autoComplete="name"
-                  {...field} 
-                />
+                <div className="relative">
+                  <User className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="John Doe" 
+                    autoComplete="name"
+                    className="pl-10"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -51,12 +56,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="your.email@example.com" 
-                  type="email" 
-                  autoComplete="email"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="your.email@example.com" 
+                    type="email" 
+                    autoComplete="email"
+                    className="pl-10"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,14 +79,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="••••••••" 
-                  type="password" 
-                  autoComplete="new-password"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="••••••••" 
+                    type="password" 
+                    autoComplete="new-password"
+                    className="pl-10"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs" />
+              <div className="mt-1 text-xs text-muted-foreground">
+                Password must be at least 8 characters with at least 1 uppercase letter, 1 lowercase letter, and 1 number.
+              </div>
             </FormItem>
           )}
         />
@@ -89,12 +105,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="••••••••" 
-                  type="password" 
-                  autoComplete="new-password"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="••••••••" 
+                    type="password" 
+                    autoComplete="new-password"
+                    className="pl-10"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

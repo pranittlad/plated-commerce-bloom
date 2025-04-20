@@ -5,7 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { loginSchema, type LoginFormValues } from './schemas';
+import { Lock, Mail } from 'lucide-react';
 
 interface LoginFormProps {
   onSubmit: (values: LoginFormValues) => Promise<void>;
@@ -31,12 +33,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading }) => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="your.email@example.com" 
-                  type="email" 
-                  autoComplete="email"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="your.email@example.com" 
+                    type="email" 
+                    autoComplete="email"
+                    className="pl-10"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -48,14 +54,26 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading }) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <div className="flex items-center justify-between">
+                <FormLabel>Password</FormLabel>
+                <Link 
+                  to="/forgot-password" 
+                  className="text-sm text-godhadya-500 hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
               <FormControl>
-                <Input 
-                  placeholder="••••••••" 
-                  type="password" 
-                  autoComplete="current-password"
-                  {...field} 
-                />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                  <Input 
+                    placeholder="••••••••" 
+                    type="password" 
+                    autoComplete="current-password"
+                    className="pl-10"
+                    {...field} 
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
