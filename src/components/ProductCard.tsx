@@ -34,9 +34,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         </div>
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-800 mb-1">{product.name}</h3>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-1">{product.name}</h3>
           <p className="text-godhadya-500 font-bold mb-2">${product.price.toFixed(2)}</p>
-          <p className="text-gray-600 text-sm mb-4">
+          <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
             {product.description ? 
               (product.description.length > 70 ? 
                 `${product.description.substring(0, 70)}...` : 
@@ -44,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               'No description available'}
           </p>
           <div className="flex justify-between items-center">
-            <span className="text-sm font-medium text-gray-500">{product.category}</span>
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{product.category}</span>
             <Button
               className="bg-godhadya-500 hover:bg-godhadya-600"
               size="sm"

@@ -20,7 +20,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
       fullName: '',
       email: '',
       password: '',
-      confirmPassword: '',
     },
   });
 
@@ -90,33 +89,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
                   />
                 </div>
               </FormControl>
-              <FormMessage className="text-xs" />
-              <div className="mt-1 text-xs text-muted-foreground">
-                Password must be at least 8 characters with at least 1 uppercase letter, 1 lowercase letter, and 1 number.
-              </div>
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                  <Input 
-                    placeholder="••••••••" 
-                    type="password" 
-                    autoComplete="new-password"
-                    className="pl-10"
-                    {...field} 
-                  />
-                </div>
-              </FormControl>
               <FormMessage />
+              <div className="mt-1 text-xs text-muted-foreground">
+                Password must be at least 6 characters
+              </div>
             </FormItem>
           )}
         />
@@ -126,7 +102,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, isLoading }) => {
           className="w-full bg-godhadya-500 hover:bg-godhadya-600" 
           disabled={isLoading}
         >
-          {isLoading ? "Creating Account..." : "Create Account"}
+          {isLoading ? "Creating your account..." : "Join the fun! 🌟"}
         </Button>
       </form>
     </Form>
