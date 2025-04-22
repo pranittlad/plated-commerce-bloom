@@ -1,58 +1,77 @@
+
 import { Product } from '@/types/product';
 
 export const menSampleProducts: Product[] = [
   {
     id: 'men-1',
-    name: "Men's Premium Cotton Polo",
+    name: "Men's Classic Denim Jeans",
     price: 49.99,
     category: 'Men',
-    description: "Classic-fit polo shirt in breathable cotton pique",
-    image_url: "https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=800",
+    description: "Slim-fit jeans with stretch fabric for comfort.",
+    image_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'men-2',
-    name: "Men's Athletic Joggers",
-    price: 59.99,
+    name: "Men's Slim Fit Oxford Shirt",
+    price: 34.99,
     category: 'Men',
-    description: "Comfortable joggers perfect for workouts or casual wear",
-    image_url: "https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?w=800",
+    description: "Classic cotton shirt for formal occasions.",
+    image_url: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'men-3',
-    name: "Men's Leather Chelsea Boots",
-    price: 129.99,
+    name: "Men's Running Sneakers",
+    price: 59.99,
     category: 'Men',
-    description: "Premium leather boots with comfortable elastic sides",
-    image_url: "https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=800",
+    description: "Lightweight sneakers with cushioned soles.",
+    image_url: "https://images.unsplash.com/photo-1519864600265-abb224058837?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'men-4',
     name: "Men's Chronograph Watch",
-    price: 199.99,
+    price: 119.99,
     category: 'Men',
-    description: "Stainless steel chronograph with premium movement",
-    image_url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800",
+    description: "Water-resistant analog watch with stainless steel band.",
+    image_url: "https://images.unsplash.com/photo-1518118573784-8fbcd101ebb9?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'men-5',
-    name: "Men's Wool Blend Blazer",
-    price: 189.99,
+    name: "Men's Gym T-Shirt",
+    price: 25.99,
     category: 'Men',
-    description: "Tailored fit blazer perfect for formal occasions",
-    image_url: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800",
+    description: "Breathable, quick-dry t-shirt. Perfect for workouts.",
+    image_url: "https://images.unsplash.com/photo-1542068829-1115f7259450?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'men-6',
-    name: "Men's Leather Messenger Bag",
-    price: 149.99,
+    name: "Men's Casual Chinos",
+    price: 39.99,
     category: 'Men',
-    description: "Professional leather bag with multiple compartments",
-    image_url: "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?w=800",
+    description: "Versatile cotton chinos with a modern fit.",
+    image_url: "https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?w=800",
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'men-7',
+    name: "Men's Leather Boots",
+    price: 89.99,
+    category: 'Men',
+    description: "Durable leather boots, great for all seasons.",
+    image_url: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800",
+    created_at: new Date().toISOString()
+  },
+  {
+    id: 'men-8',
+    name: "Men's Hooded Sweatshirt",
+    price: 44.99,
+    category: 'Men',
+    description: "Soft fleece hoodie for everyday comfort.",
+    image_url: "https://images.unsplash.com/photo-1460134582976-0049c77ec6bc?w=800",
     created_at: new Date().toISOString()
   }
 ];
