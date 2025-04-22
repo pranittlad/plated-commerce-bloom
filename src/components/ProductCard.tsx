@@ -5,6 +5,7 @@ import { Product } from '@/context/CartContext';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface ProductCardProps {
   product: Product;
@@ -25,9 +26,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="relative overflow-hidden">
           <img 
             src={product.image_url} 
-            alt={product.name} 
+            alt={product.name}
+            loading="lazy"
             className="product-img group-hover:scale-105 transition-transform duration-500"
           />
+          <div className="absolute top-2 right-2">
+            <Badge variant="secondary" className="bg-white/80 text-black">
+              New Arrival
+            </Badge>
+          </div>
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
             <p className="text-sm font-medium">{product.name}</p>
             <p className="text-lg font-bold">${product.price.toFixed(2)}</p>

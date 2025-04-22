@@ -1,10 +1,14 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductGrid from '@/components/ProductGrid';
+import CategoryBanner from '@/components/CategoryBanner';
+import { Card } from '@/components/ui/card';
+import { Slider } from '@/components/ui/slider';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { fetchProductsByCategory } from '@/lib/supabase';
 import { Product } from '@/types/product';
 
@@ -70,62 +74,55 @@ const menSampleProducts: Product[] = [
 const womenSampleProducts: Product[] = [
   {
     id: 'women-1',
-    name: "Women's Summer Floral Dress",
-    price: 49.99,
+    name: "Floral Summer Maxi Dress",
+    price: 89.99,
     category: 'Women',
-    description: "Lightweight floral dress, perfect for summer days.",
-    image_url: "https://images.unsplash.com/photo-1623609163859-ca93c959b5b8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d29tZW5zJTIwZHJlc3N8ZW58MHx8MHx8fDA%3D",
+    description: "Elegant floral maxi dress perfect for summer occasions.",
+    image_url: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'women-2',
-    name: "Women's High-Waisted Jeans",
-    price: 65.99,
+    name: "Designer Leather Handbag",
+    price: 129.99,
     category: 'Women',
-    description: "Stretch high-waisted jeans with shaping technology.",
-    image_url: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8amVhbnN8ZW58MHx8MHx8fDA%3D",
+    description: "Premium leather handbag with multiple compartments.",
+    image_url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'women-3',
-    name: "Women's Knitted Sweater",
-    price: 55.99,
+    name: "Athletic Performance Leggings",
+    price: 54.99,
     category: 'Women',
-    description: "Soft knitted sweater for cozy autumn and winter days.",
-    image_url: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3dlYXRlcnxlbnwwfHwwfHx8MA%3D%3D",
+    description: "High-performance leggings with moisture-wicking technology.",
+    image_url: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'women-4',
-    name: "Women's Running Shoes",
-    price: 89.99,
+    name: "Pearl Statement Necklace",
+    price: 45.99,
     category: 'Women',
-    description: "Comfortable running shoes with enhanced arch support.",
-    image_url: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d29tZW5zJTIwc2hvZXN8ZW58MHx8MHx8fDA%3D",
+    description: "Elegant pearl necklace for special occasions.",
+    image_url: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800",
     created_at: new Date().toISOString()
   },
   {
     id: 'women-5',
-    name: "Women's Leather Handbag",
-    price: 79.99,
+    name: "Cashmere Blend Sweater",
+    price: 119.99,
     category: 'Women',
-    description: "Classic leather handbag with multiple compartments.",
-    image_url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGFuZGJhZ3xlbnwwfHwwfHx8MA%3D%3D",
-    created_at: new Date().toISOString()
-  },
-  {
-    id: 'women-6',
-    name: "Women's Casual Blazer",
-    price: 85.99,
-    category: 'Women',
-    description: "Versatile blazer that can be dressed up or down.",
-    image_url: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d29tZW5zJTIwYmxhemVyfGVufDB8fDB8fHww",
+    description: "Luxuriously soft cashmere blend sweater in classic cut.",
+    image_url: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800",
     created_at: new Date().toISOString()
   }
 ];
 
 const CategoryPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
+  const [priceRange, setPriceRange] = useState([0, 200]);
+  const [selectedSize, setSelectedSize] = useState<string>('all');
   
   // Try to fetch products from Supabase first
   const { data: supabaseProducts = [], isLoading } = useQuery({
@@ -134,37 +131,80 @@ const CategoryPage: React.FC = () => {
     enabled: category === 'men' || category === 'women'
   });
 
-  // Determine which products to display - use sample products only if Supabase returns empty
-  const products = supabaseProducts.length > 0 
+  // Determine which products to display
+  let products = supabaseProducts.length > 0 
     ? supabaseProducts 
     : (category === 'men' ? menSampleProducts : womenSampleProducts);
 
-  const categoryTitle = category === 'men' ? "Men's Collection" : "Women's Collection";
-  const categoryDescription = category === 'men' 
-    ? "Discover our latest styles for men. From casual to formal, we have everything you need to look your best."
-    : "Explore our trendy collection for women. Find your perfect style from our range of elegant and casual wear.";
+  // Apply filters
+  products = products.filter(product => 
+    product.price >= priceRange[0] && 
+    product.price <= priceRange[1]
+  );
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow">
-        <div className="bg-gray-100 dark:bg-gray-800 py-12">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
-              {categoryTitle}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl">
-              {categoryDescription}
-            </p>
-          </div>
-        </div>
+        <CategoryBanner category={category as 'men' | 'women'} />
         
-        <div className="container mx-auto px-4 py-12">
-          <ProductGrid 
-            products={products}
-            loading={isLoading && products.length === 0}
-            title={`${categoryTitle} Products`}
-          />
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Filters */}
+            <Card className="p-6 h-fit">
+              <h2 className="text-xl font-semibold mb-4">Filters</h2>
+              
+              <div className="space-y-6">
+                {/* Price Range */}
+                <div>
+                  <Label>Price Range: ${priceRange[0]} - ${priceRange[1]}</Label>
+                  <Slider
+                    defaultValue={[0, 200]}
+                    max={200}
+                    step={10}
+                    value={priceRange}
+                    onValueChange={setPriceRange}
+                    className="mt-2"
+                  />
+                </div>
+
+                {/* Size Filter */}
+                <div>
+                  <Label>Size</Label>
+                  <RadioGroup
+                    defaultValue="all"
+                    onValueChange={setSelectedSize}
+                    className="mt-2"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="all" id="all" />
+                      <Label htmlFor="all">All</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="s" id="s" />
+                      <Label htmlFor="s">Small</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="m" id="m" />
+                      <Label htmlFor="m">Medium</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="l" id="l" />
+                      <Label htmlFor="l">Large</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+            </Card>
+
+            {/* Product Grid */}
+            <div className="lg:col-span-3">
+              <ProductGrid 
+                products={products}
+                loading={isLoading && products.length === 0}
+              />
+            </div>
+          </div>
         </div>
       </main>
       <Footer />
